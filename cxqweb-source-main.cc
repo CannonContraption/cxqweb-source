@@ -140,7 +140,7 @@ int main(int argc, char* argv[]){
 	if(!good) cout<<"<title>Invalid quiz ID.</title>"<<endl;
 	else{
 		cout<<"<title>Take quiz "<<argv[1]<<"</title>"<<endl;
-		cout<<"<link rel=stylesheet type=text/html href=master.css>"<<endl;
+		cout<<"<link rel=stylesheet type=text/css href=master.css>"<<endl;
 	}
 	cout<<"</head>"<<endl<<"<body>"<<endl;
 	if(!good){
