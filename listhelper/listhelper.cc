@@ -72,3 +72,20 @@ T& singlelinked<T>::operator[](int index){
 	}
 	return current->data;
 }
+
+template <class T>
+void singlelinked<T>::clearlist(){
+	chainlink * current = head;
+	chainlink * oldlink = current;
+	while(current){
+		oldlink = current;
+		current = current -> next;
+		delete oldlink;
+	}
+	head = new chainlink;
+}
+
+template <class T>
+void singlelinked<T>::detachhead(){
+	head = NULL;
+}

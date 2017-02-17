@@ -21,4 +21,6 @@ public:
 	T * getelement(int index);
 	T& operator[] (int index);
 	singlelinked();
+	void clearlist();
+	void detachhead();
 };
