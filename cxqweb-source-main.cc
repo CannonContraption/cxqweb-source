@@ -18,13 +18,14 @@ struct quiz{
 	singlelinked<question> questionlist;
 } master_quiz;
 
-/* return codes:
+/*----------------------------------------
+return codes:
 1: invalid [quiz] level key/value pair
 2: invalid [question] level key/value pair
 3: invalid [] section
 4: file open issue
-*/
-int getQuizResults(string filename){
+----------------------------------------*/
+int get_quiz_results(string filename){
 	ifstream quizfile;
 	quizfile.open(filename.c_str());
 	if(!quizfile.is_open()){
@@ -93,12 +94,39 @@ int getQuizResults(string filename){
 	return 0;
 }
 
-/*
+/*----------------------
+Return codes:
+0: success
+1: no questions to print
+----------------------*/
+int format_php_quiz(){
+	if(master_quiz.questionlist.size()<1) return 1;
+	cout<<"<h2>"<<master_quiz.name<<"</h2>"<<endl;
+	cout<<"<h3>"<<master_quiz.questionlist.size()<<" questions."<<endl;
+	cout<<"<form id=quiz>"<<endl;
+	int optionlistsize;
+	int questionlistsize = master_quiz.questionlist.size();
+	question currentquestion;
+	option currentoption;
+	for(int questionid = 0; questionid<questionlistsize; questionid++){
+		currentquestion = master_quiz.questionlist[questionid];
+		cout<<"<p>"<<currentquestion.description<<"</p>"<<endl;
+		optionlistsize = master_quiz.questionlist[questionid].optionlist.size();
+		for(int optionid = 0; optionid<optionlistsize; optionid++){
+			currentoption = currentquestion.optionlist[optionid];
+			cout<<"<input type=radio name=question"<<questionid<<" value="<<currentoption.identifier<<">"<<currentoption.description<<"</input><br>"<<endl;
+		}
+	}
+	cout<<"</form>"<<endl;
+	return 0;
+}
+
+/*----------------------------------------------
 Return codes:
 0 - success
 1 - no test id
 2 - problem parsing quiz file (io, syntax, etc.)
-*/
+----------------------------------------------*/
 int main(int argc, char* argv[]){
 	bool good = true;
 	cout<<"<html>"<<endl<<"<head>"<<endl;
@@ -110,17 +138,14 @@ int main(int argc, char* argv[]){
 		cout<<"<title>Take quiz "<<argv[1]<<endl;
 	}
 	cout<<"</head>"<<endl<<"<body>"<<endl;
-	if(good){
-		cout<<"<h1>Take a Quiz</h1>"<<endl;
-	}
-	else{
+	if(!good){
 		cout<<"<h1>No quiz ID.</h1>"<<endl;
 		cout<<"<p>You have not supplied an appropriate quiz id. Please ask your instructor for a new link.</p>"<<endl;
 		return 1;
 	}
 	string name = argv[1];
 	name += ".ini";
-	int quizresultgrab = getQuizResults(name);
+	int quizresultgrab = get_quiz_results(name);
 	switch(quizresultgrab){
 	case 0:
 		break;
@@ -141,5 +166,8 @@ int main(int argc, char* argv[]){
 		cout<<"</body>"<<endl<<"</html>"<<endl;
 		return 2;
 	}
+	cout<<"<h1>Take a Quiz</h1>"<<endl;
+	int quizprintgrab = format_php_quiz();
+	cout<<"</body>"<<endl<<"</html>"<<endl;
 	return 0;
 }
