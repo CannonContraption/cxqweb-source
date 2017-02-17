@@ -63,7 +63,7 @@ int getQuizResults(string filename){
 		}
 		if(key[0] == '['){
 			if(currentlevel == quizlevel){
-				//TODO: figure out if quiz-level logic is needed
+				//Quiz-level logic is not needed if we have one quiz per quiz file.
 			} else if (currentlevel == questionlevel){
 				master_quiz.questionlist.push_back(currentquestion);
 			}
@@ -90,6 +90,7 @@ int getQuizResults(string filename){
 	}
 	master_quiz.questionlist.push_back(currentquestion);
 	quizfile.close();
+	return 0;
 }
 
 /*
