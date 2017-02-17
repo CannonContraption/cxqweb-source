@@ -105,13 +105,14 @@ int format_php_quiz(){
 	cout<<"<h2>"<<master_quiz.name<<"</h2>"<<endl;
 	cout<<"<h3>"<<master_quiz.questionlist.size()<<" questions."<<endl;
 	cout<<"<form id=quiz>"<<endl;
+	cout<<"<table><tr><td>Name</td><td>E-Mail</td></tr><tr><td><input type=text class=textfield></input></td><td><input type=text class=textfield></input></td></tr></table>"<<endl;
 	int optionlistsize;
 	int questionlistsize = master_quiz.questionlist.size();
 	question currentquestion;
 	option currentoption;
 	for(int questionid = 0; questionid<questionlistsize; questionid++){
 		currentquestion = master_quiz.questionlist[questionid];
-		cout<<"<p>"<<currentquestion.description<<"</p>"<<endl;
+		cout<<"<p class=questiontext>"<<currentquestion.description<<"</p>"<<endl;
 		optionlistsize = master_quiz.questionlist[questionid].optionlist.size();
 		for(int optionid = 0; optionid<optionlistsize; optionid++){
 			currentoption = currentquestion.optionlist[optionid];
@@ -119,6 +120,7 @@ int format_php_quiz(){
 			cout<<"<input type=radio name=question"<<questionid<<" value="<<currentoption.identifier<<">"<<currentoption.identifier<<") "<<currentoption.description<<"</input><br>"<<endl;
 		}
 	}
+	cout<<"<br><br><input type=submit value=\"Submit Quiz\"></input>"<<endl;
 	cout<<"</form>"<<endl;
 	return 0;
 }
@@ -138,6 +140,7 @@ int main(int argc, char* argv[]){
 	if(!good) cout<<"<title>Invalid quiz ID.</title>"<<endl;
 	else{
 		cout<<"<title>Take quiz "<<argv[1]<<"</title>"<<endl;
+		cout<<"<link rel=stylesheet type=text/html href=master.css>"<<endl;
 	}
 	cout<<"</head>"<<endl<<"<body>"<<endl;
 	if(!good){
