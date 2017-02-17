@@ -67,6 +67,7 @@ int get_quiz_results(string filename){
 				//Quiz-level logic is not needed if we have one quiz per quiz file.
 			} else if (currentlevel == questionlevel){
 				master_quiz.questionlist.push_back(currentquestion);
+				currentquestion.optionlist.detachhead();
 			}
 			if(key == "[quiz]") currentlevel = quizlevel;
 			else if(key == "[question]") currentlevel = questionlevel;
@@ -114,7 +115,8 @@ int format_php_quiz(){
 		optionlistsize = master_quiz.questionlist[questionid].optionlist.size();
 		for(int optionid = 0; optionid<optionlistsize; optionid++){
 			currentoption = currentquestion.optionlist[optionid];
-			cout<<"<input type=radio name=question"<<questionid<<" value="<<currentoption.identifier<<">"<<currentoption.description<<"</input><br>"<<endl;
+			if(currentoption.identifier == "") continue;
+			cout<<"<input type=radio name=question"<<questionid<<" value="<<currentoption.identifier<<">"<<currentoption.identifier<<") "<<currentoption.description<<"</input><br>"<<endl;
 		}
 	}
 	cout<<"</form>"<<endl;
@@ -135,7 +137,7 @@ int main(int argc, char* argv[]){
 	}
 	if(!good) cout<<"<title>Invalid quiz ID.</title>"<<endl;
 	else{
-		cout<<"<title>Take quiz "<<argv[1]<<endl;
+		cout<<"<title>Take quiz "<<argv[1]<<"</title>"<<endl;
 	}
 	cout<<"</head>"<<endl<<"<body>"<<endl;
 	if(!good){
