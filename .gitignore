@@ -2,3 +2,4 @@
 *-results.txt
 *~
 *.kate-swp
+build/
