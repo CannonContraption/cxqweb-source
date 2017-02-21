@@ -105,7 +105,7 @@ int format_php_quiz(string quizname){
 	if(master_quiz.questionlist.size()<1) return 1;
 	cout<<"<h2>"<<master_quiz.name<<"</h2>"<<endl;
 	cout<<"<h3>"<<master_quiz.questionlist.size()<<" questions."<<endl;
-	cout<<"<form id=quiz action=submitquiz.cgi method=GET>"<<endl;
+	cout<<"<form id=quiz action=submitquiz.cgi method=POST>"<<endl;
 	cout<<"<input type=hidden name=quizname value=\""<<quizname<<"\"></input>"<<endl;
 	cout<<"<table><tr><td>First Name</td><td>Last Name</td><td>E-Mail</td></tr><tr><td><input type=text name=fname class=textfield></input></td><td><input type=text name=lname class=textfield></input></td><td><input class=textfield type=text name=email></input></td></tr></table>"<<endl;
 	int optionlistsize;
