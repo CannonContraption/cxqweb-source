@@ -16,7 +16,7 @@ int main(){
 	scorefile<<kvpairs[2].value<<","<<kvpairs[1].value<<" ";
 	cout<<"KVCOUNT: "<<kvpaircount<<endl;
 	for(int i = 4; i<kvpaircount; i++){//4 components before questions, then dynamically created question answer list
-		scorefile>>kvpairs[i].value;
+		scorefile<<kvpairs[i].value;
 		if(i%4 == 0) scorefile<<" ";
 	}
 	scorefile<<endl;
