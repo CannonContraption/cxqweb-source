@@ -106,6 +106,7 @@ int format_php_quiz(string quizname){
 	cout<<"<h2>"<<master_quiz.name<<"</h2>"<<endl;
 	cout<<"<h3>"<<master_quiz.questionlist.size()<<" questions."<<endl;
 	cout<<"<form id=quiz action=submitquiz.cgi method=GET>"<<endl;
+	cout<<"<input type=hidden name=quizname value=\""<<quizname<<"\"></input>"<<endl;
 	cout<<"<table><tr><td>First Name</td><td>Last Name</td><td>E-Mail</td></tr><tr><td><input type=text name=fname class=textfield></input></td><td><input type=text name=lname class=textfield></input></td><td><input class=textfield type=text name=email></input></td></tr></table>"<<endl;
 	int optionlistsize;
 	int questionlistsize = master_quiz.questionlist.size();
@@ -121,7 +122,6 @@ int format_php_quiz(string quizname){
 			cout<<"<input type=radio name=question"<<questionid<<" value="<<currentoption.identifier<<">"<<currentoption.identifier<<") "<<currentoption.description<<"</input><br>"<<endl;
 		}
 	}
-	cout<<"<input type=hidden value=\""<<quizname<<"\"></input>"<<endl;
 	cout<<"<br><br><input type=submit value=\"Submit Quiz\"></input>"<<endl;
 	cout<<"</form>"<<endl;
 	return 0;
