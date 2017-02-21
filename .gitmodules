@@ -1,0 +1,3 @@
+[submodule "cppcgimanager"]
+	path = cppcgimanager
+	url = https://github.com/CanonContraption/cppcgimanager
