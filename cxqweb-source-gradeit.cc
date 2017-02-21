@@ -9,7 +9,7 @@ int main(){
 	cout<<"Content-type: text/html\r\n\r\n"<<endl;
 	parsekvstrings(true);
 	fstream scorefile;
-	string sfname = kvpairs[0].value+".txt";
+	string sfname = "quizresults/"+kvpairs[0].value+".txt";
 	scorefile.open(sfname, fstream::out);
 	string sfstring;
 	string studentemail = kvpairs[3].value;
