@@ -100,11 +100,11 @@ Return codes:
 0: success
 1: no questions to print
 ----------------------*/
-int format_php_quiz(){
+int format_php_quiz(string quizname){
 	if(master_quiz.questionlist.size()<1) return 1;
 	cout<<"<h2>"<<master_quiz.name<<"</h2>"<<endl;
 	cout<<"<h3>"<<master_quiz.questionlist.size()<<" questions."<<endl;
-	cout<<"<form id=quiz>"<<endl;
+	cout<<"<form id=quiz action=submitquiz.cgi>"<<endl;
 	cout<<"<table><tr><td>Name</td><td>E-Mail</td></tr><tr><td><input type=text class=textfield></input></td><td><input type=text class=textfield></input></td></tr></table>"<<endl;
 	int optionlistsize;
 	int questionlistsize = master_quiz.questionlist.size();
@@ -120,6 +120,7 @@ int format_php_quiz(){
 			cout<<"<input type=radio name=question"<<questionid<<" value="<<currentoption.identifier<<">"<<currentoption.identifier<<") "<<currentoption.description<<"</input><br>"<<endl;
 		}
 	}
+	cout<<"<input type=hidden value=\""<<quizname<<"\"></input>"<<endl;
 	cout<<"<br><br><input type=submit value=\"Submit Quiz\"></input>"<<endl;
 	cout<<"</form>"<<endl;
 	return 0;
@@ -172,7 +173,7 @@ int main(int argc, char* argv[]){
 		return 2;
 	}
 	cout<<"<h1>Take a Quiz</h1>"<<endl;
-	int quizprintgrab = format_php_quiz();
+	int quizprintgrab = format_php_quiz(name);
 	cout<<"</body>"<<endl<<"</html>"<<endl;
 	return 0;
 }
