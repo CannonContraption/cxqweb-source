@@ -133,16 +133,17 @@ Return codes:
 1 - no test id
 2 - problem parsing quiz file (io, syntax, etc.)
 ----------------------------------------------*/
-int main(int argc, char* argv[]){
+int main(){
 	bool good = true;
 	cout<<"Content-type: text/html\r\n\r\n"<<endl;
 	cout<<"<html>"<<endl<<"<head>"<<endl;
-	if(argc<2){
+	cgim::parsekvstrings(false);
+	if(cgim::kvpaircount<0){
 		good = false;
 	}
 	if(!good) cout<<"<title>Invalid quiz ID.</title>"<<endl;
 	else{
-		cout<<"<title>Take quiz "<<argv[1]<<"</title>"<<endl;
+		cout<<"<title>Take quiz "<<cgim::kvpairs[0].value<<"</title>"<<endl;
 		cout<<"<link rel=stylesheet type=text/css href=master.css>"<<endl;
 	}
 	cout<<"</head>"<<endl<<"<body>"<<endl;
@@ -151,7 +152,7 @@ int main(int argc, char* argv[]){
 		cout<<"<p>You have not supplied an appropriate quiz id. Please ask your instructor for a new link.</p>"<<endl;
 		return 1;
 	}
-	string name = argv[1];
+	string name = cgim::kvpairs[0].value;
 	name += ".ini";
 	int quizresultgrab = get_quiz_results(name);
 	switch(quizresultgrab){
