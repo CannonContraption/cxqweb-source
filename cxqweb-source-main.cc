@@ -1,6 +1,7 @@
 #include<iostream>
 #include<fstream>
 #include"listhelper/listhelper.cc"
+#include"cppcgimanager/getquery.cpp"
 using namespace std;
 
 struct option{
@@ -134,6 +135,7 @@ Return codes:
 ----------------------------------------------*/
 int main(int argc, char* argv[]){
 	bool good = true;
+	cout<<"Content-type: text/html\r\n\r\n"<<endl;
 	cout<<"<html>"<<endl<<"<head>"<<endl;
 	if(argc<2){
 		good = false;

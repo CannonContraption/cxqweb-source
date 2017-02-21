@@ -5,6 +5,6 @@
 using namespace std;
 
 int main(){
-	cout<<"This is not yet done."<<endl;
+	cout<<"Content-type: text/html\r\n\r\n"<<endl;
 	return 0;
 }
