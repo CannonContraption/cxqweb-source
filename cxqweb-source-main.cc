@@ -10,6 +10,7 @@ struct option{
 };
 
 struct question{
+	int number;
 	string description;
 	singlelinked<option> optionlist;
 };
@@ -44,6 +45,7 @@ int get_quiz_results(string filename){
 	string values[4]; //common values label.
 	question currentquestion;
 	option currentoption;
+	int qnumber = 0;
 	while(!quizfile.fail()){
 		getline(quizfile, currentline);
 		spaces = 0;
@@ -71,7 +73,10 @@ int get_quiz_results(string filename){
 				currentquestion.optionlist.detachhead();
 			}
 			if(key == "[quiz]") currentlevel = quizlevel;
-			else if(key == "[question]") currentlevel = questionlevel;
+			else if(key == "[question]"){
+				currentlevel = questionlevel;
+				qnumber++;
+			}
 			else return 3;
 		}
 		else{
@@ -86,6 +91,7 @@ int get_quiz_results(string filename){
 					currentquestion.optionlist.push_back(currentoption);
 				} else if (key == "description") {
 					currentquestion.description = value;
+					currentquestion.number = qnumber;
 				}
 				else return 2;
 			}
@@ -102,6 +108,37 @@ Return codes:
 1: no questions to print
 ----------------------*/
 int format_php_quiz(string quizname, string purename){
+	if(master_quiz.questionlist.size()<1) return 1;
+	cout<<"<h2>"<<master_quiz.name<<"</h2>"<<endl;
+	cout<<"<h3>"<<master_quiz.questionlist.size()<<" questions."<<endl;
+	cout<<"<form id=quiz action=submitquiz.cgi method=POST>"<<endl;
+	cout<<"<input type=hidden name=quizname value=\""<<purename<<"\"></input>"<<endl;
+	cout<<"<table><tr><td>First Name</td><td>Last Name</td><td>E-Mail</td></tr><tr><td><input type=text name=fname class=textfield></input></td><td><input type=text name=lname class=textfield></input></td><td><input class=textfield type=text name=email></input></td></tr></table>"<<endl;
+	int optionlistsize;
+	int questionlistsize = master_quiz.questionlist.size();
+	question currentquestion;
+	option currentoption;
+	for(int questionid = 0; questionid<questionlistsize; questionid++){
+		currentquestion = master_quiz.questionlist[questionid];
+		cout<<"<p class=questiontext>"<<currentquestion.description<<"</p>"<<endl;
+		optionlistsize = master_quiz.questionlist[questionid].optionlist.size();
+		for(int optionid = 0; optionid<optionlistsize; optionid++){
+			currentoption = currentquestion.optionlist[optionid];
+			if(currentoption.identifier == "") continue;
+			cout<<"<input type=radio name="<<questionid<<" value="<<currentoption.identifier<<">"<<currentoption.identifier<<") "<<currentoption.description<<"</input><br>"<<endl;
+		}
+	}
+	cout<<"<br><br><input type=submit value=\"Submit Quiz\"></input>"<<endl;
+	cout<<"</form>"<<endl;
+	return 0;
+}
+
+/*----------------------
+Return codes:
+0: success
+1: no questions to print
+----------------------*/
+int format_php_quiz_mixed(string quizname, string purename){
 	if(master_quiz.questionlist.size()<1) return 1;
 	cout<<"<h2>"<<master_quiz.name<<"</h2>"<<endl;
 	cout<<"<h3>"<<master_quiz.questionlist.size()<<" questions."<<endl;
