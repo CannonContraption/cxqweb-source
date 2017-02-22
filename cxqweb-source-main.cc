@@ -138,12 +138,44 @@ int main(){
 	cout<<"Content-type: text/html\r\n\r\n"<<endl;
 	cout<<"<html>"<<endl<<"<head>"<<endl;
 	cgim::parsekvstrings(false);
+	int quizresultgrab = 255;
+	string name = "";
+	string purename = "";
 	if(cgim::kvpaircount<0){
 		good = false;
+		cout<<"<title>Invalid quiz ID.</title>"<<endl;
 	}
-	if(!good) cout<<"<title>Invalid quiz ID.</title>"<<endl;
 	else{
-		cout<<"<title>Take quiz "<<cgim::kvpairs[0].value<<"</title>"<<endl;
+		name = cgim::kvpairs[0].value;
+		purename = name;
+		name += ".ini";
+		quizresultgrab = get_quiz_results(name);
+		switch(quizresultgrab){
+		case 0:
+			break;
+		case 1:
+			cout<<"</head><body><h1>Question file syntax error.</h1>"<<endl<<"<p>Please alert your instructor, there is an error inside the [quiz] section.</p>"<<endl;
+			break;
+		case 2:
+			cout<<"</head><body><h1>Question file syntax error.</h1>"<<endl<<"<p>Please alert your instructor, there is an error inside the [question] section.</p>"<<endl;
+			break;
+		case 3:
+			cout<<"</head><body><h1>Question file syntax error.</h1>"<<endl<<"<p>Please alert your instructor, there is an extra [bracketed] set in the question file.</p>"<<endl;
+			break;
+		case 4:
+			cout<<"</head><body><h1>Bad quiz ID.</h1>"<<endl<<"<p>The quiz ID you have supplied is wrong. Please ask your instructor for a new one.</p>"<<endl;
+			break;
+		case 255:
+		default:
+			cout<<"</head><body><h1>Internal Server Error</h1><h2>Please report a bug.</h2>"<<endl;
+			cout<<"<p>Email <a href=\"mailto:jread@student.framingham.edu\">Jim Read</a> with details of what happened after notifying your instructor.</p>"<<endl;
+			break;
+		}
+		if(quizresultgrab != 0){
+			cout<<"</body>"<<endl<<"</html>"<<endl;
+			return 2;
+		}
+		cout<<"<title>Take Quiz: "<<master_quiz.name<<"</title>"<<endl;
 		cout<<"<link rel=stylesheet type=text/css href=master.css>"<<endl;
 	}
 	cout<<"</head>"<<endl<<"<body>"<<endl;
@@ -151,30 +183,6 @@ int main(){
 		cout<<"<h1>No quiz ID.</h1>"<<endl;
 		cout<<"<p>You have not supplied an appropriate quiz id. Please ask your instructor for a new link.</p>"<<endl;
 		return 1;
-	}
-	string name = cgim::kvpairs[0].value;
-	string purename = name;
-	name += ".ini";
-	int quizresultgrab = get_quiz_results(name);
-	switch(quizresultgrab){
-	case 0:
-		break;
-	case 1:
-		cout<<"<h1>Question file syntax error.</h1>"<<endl<<"<p>Please alert your instructor, there is an error inside the [quiz] section.</p>"<<endl;
-		break;
-	case 2:
-		cout<<"<h1>Question file syntax error.</h1>"<<endl<<"<p>Please alert your instructor, there is an error inside the [question] section.</p>"<<endl;
-		break;
-	case 3:
-		cout<<"<h1>Question file syntax error.</h1>"<<endl<<"<p>Please alert your instructor, there is an extra [bracketed] set in the question file.</p>"<<endl;
-		break;
-	case 4:
-		cout<<"<h1>Bad quiz ID.</h1>"<<endl<<"<p>The quiz ID you have supplied is wrong. Please ask your instructor for a new one.</p>"<<endl;
-		break;
-	}
-	if(quizresultgrab != 0){
-		cout<<"</body>"<<endl<<"</html>"<<endl;
-		return 2;
 	}
 	cout<<"<h1>Take a Quiz</h1>"<<endl;
 	int quizprintgrab = format_php_quiz(name, purename);
