@@ -1,0 +1,2 @@
+REQUEST_METHOD=GET QUERY_STRING='?quiz=draftquizfile' 
+REQUEST_METHOD=GET QUERY_STRING='?quizname=draftquizfile.ini&fname=Jim&lname=Read&email=dumbguy%40uwherever.edu&2=a&0=d&3=b&4=a&5=a&1=c'
