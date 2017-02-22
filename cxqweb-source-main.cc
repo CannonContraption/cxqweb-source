@@ -155,7 +155,7 @@ int main(){
 	string name = cgim::kvpairs[0].value;
 	string purename = name;
 	name += ".ini";
-	int quizresultgrab = get_quiz_results(name, purename);
+	int quizresultgrab = get_quiz_results(name);
 	switch(quizresultgrab){
 	case 0:
 		break;
@@ -177,7 +177,7 @@ int main(){
 		return 2;
 	}
 	cout<<"<h1>Take a Quiz</h1>"<<endl;
-	int quizprintgrab = format_php_quiz(name);
+	int quizprintgrab = format_php_quiz(name, purename);
 	cout<<"</body>"<<endl<<"</html>"<<endl;
 	return 0;
 }
