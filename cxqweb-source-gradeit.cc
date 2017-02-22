@@ -20,7 +20,12 @@ int main(){
 	scorefile<<kvpairs[2].value<<","<<kvpairs[1].value<<"	";
 	//cout<<"KVCOUNT: "<<kvpaircount<<endl;
 	for(int i = 4; i<kvpaircount; i++){//4 components before questions, then dynamically created question answer list
-		scorefile<<kvpairs[i].value;
+		for(int j = 4; j<kvpaircount; j++){
+			if(stoi(kvpairs[j].key)==i-4){
+				scorefile<<kvpairs[j].value;
+				break;
+			}
+		}
 		if((i+1)%4 == 0) scorefile<<" ";
 	}
 	scorefile<<endl;

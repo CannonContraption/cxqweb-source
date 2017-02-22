@@ -119,7 +119,7 @@ int format_php_quiz(string quizname, string purename){
 		for(int optionid = 0; optionid<optionlistsize; optionid++){
 			currentoption = currentquestion.optionlist[optionid];
 			if(currentoption.identifier == "") continue;
-			cout<<"<input type=radio name=question"<<questionid<<" value="<<currentoption.identifier<<">"<<currentoption.identifier<<") "<<currentoption.description<<"</input><br>"<<endl;
+			cout<<"<input type=radio name="<<questionid<<" value="<<currentoption.identifier<<">"<<currentoption.identifier<<") "<<currentoption.description<<"</input><br>"<<endl;
 		}
 	}
 	cout<<"<br><br><input type=submit value=\"Submit Quiz\"></input>"<<endl;
