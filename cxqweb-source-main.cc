@@ -1,5 +1,6 @@
 #include<iostream>
 #include<fstream>
+#include<random>
 #include"listhelper/listhelper.cc"
 #include"cppcgimanager/getquery.cpp"
 using namespace std;
@@ -102,35 +103,35 @@ int get_quiz_results(string filename){
 	return 0;
 }
 
-/*----------------------
-Return codes:
-0: success
-1: no questions to print
-----------------------*/
-int format_php_quiz(string quizname, string purename){
-	if(master_quiz.questionlist.size()<1) return 1;
-	cout<<"<h2>"<<master_quiz.name<<"</h2>"<<endl;
-	cout<<"<h3>"<<master_quiz.questionlist.size()<<" questions."<<endl;
-	cout<<"<form id=quiz action=submitquiz.cgi method=POST>"<<endl;
-	cout<<"<input type=hidden name=quizname value=\""<<purename<<"\"></input>"<<endl;
-	cout<<"<table><tr><td>First Name</td><td>Last Name</td><td>E-Mail</td></tr><tr><td><input type=text name=fname class=textfield></input></td><td><input type=text name=lname class=textfield></input></td><td><input class=textfield type=text name=email></input></td></tr></table>"<<endl;
-	int optionlistsize;
-	int questionlistsize = master_quiz.questionlist.size();
-	question currentquestion;
-	option currentoption;
-	for(int questionid = 0; questionid<questionlistsize; questionid++){
-		currentquestion = master_quiz.questionlist[questionid];
-		cout<<"<p class=questiontext>"<<currentquestion.description<<"</p>"<<endl;
-		optionlistsize = master_quiz.questionlist[questionid].optionlist.size();
-		for(int optionid = 0; optionid<optionlistsize; optionid++){
-			currentoption = currentquestion.optionlist[optionid];
-			if(currentoption.identifier == "") continue;
-			cout<<"<input type=radio name="<<questionid<<" value="<<currentoption.identifier<<">"<<currentoption.identifier<<") "<<currentoption.description<<"</input><br>"<<endl;
+/*
+ * In order to facilitate randomization, we have a randomlist pointer
+ * which will eventually become an array of size (int max), which will
+ * contain every number from 0 to the desired max -1, or a random list
+ * of all numbers from 0 to max.
+ */
+int * randomlist;
+void randomize_list(int max){
+	default_random_engine genrn;
+	uniform_int_distribution<int> distribution(0,max);
+	randomlist = new int[max+1];
+	for(int i = 0; i<=max; i++){
+		randomlist[i] = distribution(genrn);
+		for(int j = 0; j<i; j++){
+			if(randomlist[i] == randomlist[j]){
+				randomlist[i]++;
+				if(randomlist[i]>max) randomlist[i]=0;
+				j=-1;//resets loop until we found our value
+				//will be set to 0 on loop end (postcommand=j++)
+			}
 		}
 	}
-	cout<<"<br><br><input type=submit value=\"Submit Quiz\"></input>"<<endl;
-	cout<<"</form>"<<endl;
-	return 0;
+}
+
+void order_list(int max){
+	randomlist = new int[max+1];
+	for(int i = 0; i<=max; i++){
+		randomlist[i]=i;
+	}
 }
 
 /*----------------------
@@ -138,7 +139,7 @@ Return codes:
 0: success
 1: no questions to print
 ----------------------*/
-int format_php_quiz_mixed(string quizname, string purename){
+int format_php_quiz(string quizname, string purename, bool randomize){
 	if(master_quiz.questionlist.size()<1) return 1;
 	cout<<"<h2>"<<master_quiz.name<<"</h2>"<<endl;
 	cout<<"<h3>"<<master_quiz.questionlist.size()<<" questions."<<endl;
@@ -149,14 +150,16 @@ int format_php_quiz_mixed(string quizname, string purename){
 	int questionlistsize = master_quiz.questionlist.size();
 	question currentquestion;
 	option currentoption;
+	if(randomize) randomize_list(master_quiz.questionlist.size());
+	else order_list(master_quiz.questionlist.size());
 	for(int questionid = 0; questionid<questionlistsize; questionid++){
-		currentquestion = master_quiz.questionlist[questionid];
+		currentquestion = master_quiz.questionlist[randomlist[questionid]];
 		cout<<"<p class=questiontext>"<<currentquestion.description<<"</p>"<<endl;
-		optionlistsize = master_quiz.questionlist[questionid].optionlist.size();
+		optionlistsize = master_quiz.questionlist[randomlist[questionid]].optionlist.size();
 		for(int optionid = 0; optionid<optionlistsize; optionid++){
 			currentoption = currentquestion.optionlist[optionid];
 			if(currentoption.identifier == "") continue;
-			cout<<"<input type=radio name="<<questionid<<" value="<<currentoption.identifier<<">"<<currentoption.identifier<<") "<<currentoption.description<<"</input><br>"<<endl;
+			cout<<"<input type=radio name="<<randomlist[questionid]<<" value="<<currentoption.identifier<<">"<<currentoption.identifier<<") "<<currentoption.description<<"</input><br>"<<endl;
 		}
 	}
 	cout<<"<br><br><input type=submit value=\"Submit Quiz\"></input>"<<endl;
@@ -222,7 +225,7 @@ int main(){
 		return 1;
 	}
 	cout<<"<h1>Take a Quiz</h1>"<<endl;
-	int quizprintgrab = format_php_quiz(name, purename);
+	int quizprintgrab = format_php_quiz(name, purename, true);
 	cout<<"</body>"<<endl<<"</html>"<<endl;
 	return 0;
 }
