@@ -157,10 +157,8 @@ int format_php_quiz(string quizname, string purename, bool randomize){
 		currentquestion = master_quiz.questionlist[randomlist1[questionid]];
 		cout<<"<p class=questiontext>"<<currentquestion.description<<"</p>"<<endl;
 		optionlistsize = master_quiz.questionlist[randomlist1[questionid]].optionlist.size();
-		if(randomize) randomize_list(optionlistsize, randomlist2);
-		else order_list(optionlistsize, randomlist2);
 		for(int optionid = 0; optionid<optionlistsize; optionid++){
-			currentoption = currentquestion.optionlist[randomlist2[optionid]];
+			currentoption = currentquestion.optionlist[optionid];
 			if(currentoption.identifier == "") continue;
 			cout<<"<input type=radio name="<<randomlist1[questionid]<<" value="<<currentoption.identifier<<">"<<currentoption.identifier<<") "<<currentoption.description<<"</input><br>"<<endl;
 		}
