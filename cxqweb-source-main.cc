@@ -109,9 +109,8 @@ int get_quiz_results(string filename){
  * contain every number from 0 to the desired max -1, or a random list
  * of all numbers from 0 to max.
  */
-int * randomlist1;
-int * randomlist2;
-void randomize_list(int max, int* randomlist){
+int* randomlist;
+void randomize_list(int max){
 	default_random_engine genrn;
 	uniform_int_distribution<int> distribution(0,max);
 	randomlist = new int[max+1];
@@ -128,7 +127,7 @@ void randomize_list(int max, int* randomlist){
 	}
 }
 
-void order_list(int max, int* randomlist){
+void order_list(int max){
 	randomlist = new int[max+1];
 	for(int i = 0; i<=max; i++){
 		randomlist[i]=i;
@@ -151,16 +150,16 @@ int format_php_quiz(string quizname, string purename, bool randomize){
 	int questionlistsize = master_quiz.questionlist.size();
 	question currentquestion;
 	option currentoption;
-	if(randomize) randomize_list(master_quiz.questionlist.size(), randomlist1);
-	else order_list(master_quiz.questionlist.size(), randomlist1);
+	if(randomize) randomize_list(master_quiz.questionlist.size(), randomlist);
+	else order_list(master_quiz.questionlist.size(), randomlist);
 	for(int questionid = 0; questionid<questionlistsize; questionid++){
-		currentquestion = master_quiz.questionlist[randomlist1[questionid]];
+		currentquestion = master_quiz.questionlist[randomlist[questionid]];
 		cout<<"<p class=questiontext>"<<currentquestion.description<<"</p>"<<endl;
-		optionlistsize = master_quiz.questionlist[randomlist1[questionid]].optionlist.size();
+		optionlistsize = master_quiz.questionlist[randomlist[questionid]].optionlist.size();
 		for(int optionid = 0; optionid<optionlistsize; optionid++){
 			currentoption = currentquestion.optionlist[optionid];
 			if(currentoption.identifier == "") continue;
-			cout<<"<input type=radio name="<<randomlist1[questionid]<<" value="<<currentoption.identifier<<">"<<currentoption.identifier<<") "<<currentoption.description<<"</input><br>"<<endl;
+			cout<<"<input type=radio name="<<randomlist[questionid]<<" value="<<currentoption.identifier<<">"<<currentoption.identifier<<") "<<currentoption.description<<"</input><br>"<<endl;
 		}
 	}
 	cout<<"<br><br><input type=submit value=\"Submit Quiz\"></input>"<<endl;
