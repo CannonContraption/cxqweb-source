@@ -3,6 +3,23 @@
 #include<random>
 #include"listhelper/listhelper.cc"
 #include"cppcgimanager/getquery.cpp"
+
+/*
+ * CxqWeb-Source-Main
+ * 
+ * We Make Quizzes and Annoy Students(tm)
+ * 
+ * This source file is made to read a .ini quiz file, determine what quiz is contained in it,
+ * randomize the questions, and then display it in a nice HTML format. It is designed for use
+ * in HTTP CGI, so as the program which generates page content for a student directly.
+ * 
+ * For more details, see the CMakeLists.txt file, which is used in the build process to determine
+ * how to create the makefile. It has defined in the file the source/executable name pairings.
+ * 
+ * This file will output makequiz.cgi.
+ */
+
+
 using namespace std;
 
 struct option{

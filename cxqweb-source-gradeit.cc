@@ -2,6 +2,21 @@
 #include<fstream>
 #include"cppcgimanager/getquery.cpp"
 
+/*
+ * CxqWeb-Source-GradeIt
+ * 
+ * The Most Misleading Source File Name Ever(tm)
+ * 
+ * This program is the side which tallies the results of a student's quiz when they hit "submit".
+ * It is responsible for parsing key/value pairs and then deciding which answer goes where in the
+ * answers file. It also accepts the student's email as an argument, but as of now does nothing
+ * with it.
+ * 
+ * This program DOES NOT GRADE ANYTHING! It is merely created to tally results for analysis later.
+ * 
+ * This program will output submitquiz.cgi.
+ */
+
 using namespace std;
 using namespace cgim;
 
