@@ -150,8 +150,8 @@ int format_php_quiz(string quizname, string purename, bool randomize){
 	int questionlistsize = master_quiz.questionlist.size();
 	question currentquestion;
 	option currentoption;
-	if(randomize) randomize_list(master_quiz.questionlist.size(), randomlist);
-	else order_list(master_quiz.questionlist.size(), randomlist);
+	if(randomize) randomize_list(master_quiz.questionlist.size());
+	else order_list(master_quiz.questionlist.size());
 	for(int questionid = 0; questionid<questionlistsize; questionid++){
 		currentquestion = master_quiz.questionlist[randomlist[questionid]];
 		cout<<"<p class=questiontext>"<<currentquestion.description<<"</p>"<<endl;
