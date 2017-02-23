@@ -38,6 +38,8 @@ struct quiz{
 	singlelinked<question> questionlist;
 } master_quiz;
 
+int max_options;
+
 /*----------------------------------------
 return codes:
 1: invalid [quiz] level key/value pair
@@ -47,6 +49,7 @@ return codes:
 ----------------------------------------*/
 int get_quiz_results(string filename){
 	ifstream quizfile;
+	max_options = 0;
 	quizfile.open(filename.c_str());
 	if(!quizfile.is_open()){
 		return 4;
@@ -69,6 +72,7 @@ int get_quiz_results(string filename){
 		spaces = 0;
 		key = "";
 		value = "";
+		int options = 0;
 		for(char c : currentline){
 			if(c == '\n') spaces = 0;
 			if(c == ' '){
@@ -107,6 +111,8 @@ int get_quiz_results(string filename){
 					currentoption.identifier = key;
 					currentoption.description = value;
 					currentquestion.optionlist.push_back(currentoption);
+					options++;
+					if(options>max_options) max_options = options;
 				} else if (key == "description") {
 					currentquestion.description = value;
 					currentquestion.number = qnumber;
@@ -176,7 +182,7 @@ int format_php_quiz(string quizname, string purename, bool randomize){
 		for(int optionid = 0; optionid<optionlistsize; optionid++){
 			currentoption = currentquestion.optionlist[optionid];
 			if(currentoption.identifier == "") continue;
-			cout<<"<input type=radio name="<<randomlist[questionid]<<" value="<<currentoption.identifier<<">"<<currentoption.identifier<<") "<<currentoption.description<<"</input><br>"<<endl;
+			cout<<"<input type=radio name="<<randomlist[questionid]<<" value="<<currentoption.identifier<<">"<<currentoption.description<<"</input><br>"<<endl;
 		}
 	}
 	cout<<"<br><br><input type=submit value=\"Submit Quiz\"></input>"<<endl;
